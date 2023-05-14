@@ -1,0 +1,15 @@
+<nav class="navbar mat-elevation-z6">
+  <ul class="outer-nav">
+    <li>
+      <a [routerLink]="['/products']" routerLinkActive="router-link-active"
+        >Products</a
+      >
+    </li>
+
+    <ul class="inner-nav">
+      <li>
+        <a [routerLink]="['/products/new']">Add new Product</a>
+      </li>
+    </ul>
+  </ul>
+</nav>
