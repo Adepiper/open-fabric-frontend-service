@@ -1,20 +1,28 @@
+<app-loader *ngIf="loading$ | async"></app-loader>
+
 <div class="product-list">
   <div class="container">
-    <div class="product-header">
-      <h1>{{ product.name }}</h1>
+    <app-table-empty-state
+      *ngIf="!(product$ | async); else isProduct"
+    ></app-table-empty-state>
 
-      <p>{{ product.price }}</p>
-    </div>
+    <ng-template #isProduct>
+      <div class="product-header">
+        <h1>{{ (product$ | async)?.name }}</h1>
 
-    <div class="img-container">
-      <img [src]="product.url" [alt]="product.name" />
-    </div>
+        <p>{{ (product$ | async)?.price }}</p>
+      </div>
 
-    <div class="description-container">
-      <h2>Description</h2>
-      <p class="description">
-        {{ product.description }}
-      </p>
-    </div>
+      <div class="img-container">
+        <img [src]="(product$ | async)?.url" [alt]="(product$ | async)?.name" />
+      </div>
+
+      <div class="description-container">
+        <h2>Description</h2>
+        <p class="description">
+          {{ (product$ | async)?.description }}
+        </p>
+      </div>
+    </ng-template>
   </div>
 </div>

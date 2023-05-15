@@ -21,4 +21,8 @@ export class ProductsService {
       product
     );
   }
+
+  getProductById(id: string) {
+    return this.https.get<Product>(`${this.apiUrl}/products/${id}`);
+  }
 }
