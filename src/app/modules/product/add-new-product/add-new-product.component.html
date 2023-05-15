@@ -50,8 +50,11 @@
       </div>
     </div>
     <div class="form-group mt-3">
-      <button [disabled]="!productForm.valid" class="btn btn-primary">
-        Add new product
+      <button
+        [disabled]="!productForm.valid || (loading$ | async)"
+        class="btn btn-primary"
+      >
+        {{ (loading$ | async) ? "Please wait..." : "Add new product" }}
       </button>
     </div>
   </form>

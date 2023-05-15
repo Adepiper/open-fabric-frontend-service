@@ -15,5 +15,10 @@ export class ProductsService {
     return this.https.get<Product[]>(`${this.apiUrl}/products`);
   }
 
-  addProducts(product: Product) {}
+  addProducts(product: Product) {
+    return this.https.post<{ message: string }>(
+      `${this.apiUrl}/products`,
+      product
+    );
+  }
 }

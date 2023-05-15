@@ -5,6 +5,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
+import { BehaviorSubject, finalize } from 'rxjs';
+import { ProductsService } from 'src/app/core/services/products.service';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-add-new-product',
@@ -12,24 +16,30 @@ import {
   styleUrls: ['./add-new-product.component.scss'],
 })
 export class AddNewProductComponent {
+  loading = new BehaviorSubject(false);
+  loading$ = this.loading.asObservable();
   productForm = new FormGroup({
-    name: new FormControl<string | null>('', [
+    name: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(3),
     ]),
-    description: new FormControl<string | null>('', [
+    description: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(10),
     ]),
-    url: new FormControl<string | null>('', [
+    url: new FormControl<string>('', [
       Validators.required,
       Validators.pattern(
         '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?'
       ),
     ]),
-    price: new FormControl<string | null>('', [Validators.required]),
+    price: new FormControl<string>('', [Validators.required]),
   });
-  constructor() {}
+
+  constructor(
+    private toastr: HotToastService,
+    private productService: ProductsService
+  ) {}
 
   inputIsInValid(control: AbstractControl): boolean | undefined {
     return control.touched && control.invalid;
@@ -62,6 +72,23 @@ export class AddNewProductComponent {
   }
 
   onSubmit() {
-    console.log(this.productForm.value);
+    const product = this.productForm.value as Product;
+    this.loading.next(true);
+    this.productService
+      .addProducts(product)
+      .pipe(
+        finalize(() => {
+          this.loading.next(false);
+        })
+      )
+      .subscribe({
+        next: ({ message }) => {
+          this.toastr.success(message);
+          this.productForm.reset();
+        },
+        error: (error) => {
+          this.toastr.error(error.error.message ?? 'Something went wrong');
+        },
+      });
   }
 }
