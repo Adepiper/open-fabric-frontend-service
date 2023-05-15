@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class ErrorInterceptorsService implements HttpInterceptor {
         if (error.status === 401) {
           this.sessionService.clearUserInformation();
           this.router.navigate(['/login']);
+          this.toastr.error(error.error.message);
         }
         return throwError(() => error);
       })
@@ -27,6 +29,7 @@ export class ErrorInterceptorsService implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private sessionService: SessionStorageService
+    private sessionService: SessionStorageService,
+    private toastr: ToastrService
   ) {}
 }

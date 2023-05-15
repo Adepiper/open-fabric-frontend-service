@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductsListComponent } from './products-list/products-list.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { AddNewProductComponent } from './add-new-product/add-new-product.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuardService } from './core/guards/auth-guard.service';
 
 const routes: Routes = [
   {
     path: 'products',
-    component: ProductsListComponent,
+    loadChildren: () =>
+      import('./modules/product/product.module').then((m) => m.ProductModule),
+    canActivate: [AuthGuardService],
   },
   {
-    path: 'products/new',
-    component: AddNewProductComponent,
-  },
-  {
-    path: 'products/:id',
-    component: ProductDetailComponent,
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: '**',
