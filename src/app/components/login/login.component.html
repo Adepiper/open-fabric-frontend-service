@@ -1,1 +1,12 @@
-<p>login works!</p>
+<div class="container">
+  <div class="login-container">
+    <h2>Please login to view resource</h2>
+    <button
+      [disabled]="loading$ | async"
+      class="btn btn-primary"
+      (click)="loginUser()"
+    >
+      {{ (loading$ | async) ? "Please wait..." : "Login" }}
+    </button>
+  </div>
+</div>
