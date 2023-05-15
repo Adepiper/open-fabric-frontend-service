@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HotToastModule } from '@ngneat/hot-toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptorsService } from './core/interceptors/auth-interceptors.service';
 import { ErrorInterceptorsService } from './core/interceptors/error-interceptors.service';
-import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +20,13 @@ import { ToastrModule } from 'ngx-toastr';
     NavbarComponent,
     LoginComponent,
     HttpClientModule,
-    ToastrModule.forRoot(),
+
+    HotToastModule.forRoot({
+      dismissible: true,
+      autoClose: true,
+      duration: 2000,
+      position: 'top-right',
+    }),
   ],
   providers: [
     {

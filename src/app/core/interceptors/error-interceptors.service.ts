@@ -6,9 +6,9 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { HotToastService } from '@ngneat/hot-toast';
+import { Observable, catchError, throwError } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +30,6 @@ export class ErrorInterceptorsService implements HttpInterceptor {
   constructor(
     private router: Router,
     private sessionService: SessionStorageService,
-    private toastr: ToastrService
+    private toastr: HotToastService
   ) {}
 }

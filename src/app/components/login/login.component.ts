@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { BehaviorSubject, finalize } from 'rxjs';
-import { SessionStorageService } from 'src/app/core/services/session-storage.service';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
+import { BehaviorSubject, finalize } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +21,7 @@ export class LoginComponent {
     private authService: AuthService,
     private sessionService: SessionStorageService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: HotToastService
   ) {}
 
   loginUser() {
@@ -37,6 +37,7 @@ export class LoginComponent {
       .subscribe({
         next: ({ accessToken }) => {
           this.sessionService.saveUserInformation(accessToken);
+          this.toastr.success(`Welcome`);
           this.router.navigate(['/produts']);
         },
         error: (error) => {
