@@ -1,0 +1,15 @@
+<div class="subsidiary-list">
+  <div class="image">
+    <img src="../../../assets/noRecord.svg" alt="" />
+  </div>
+  <p>No results found</p>
+  <ng-container *ngIf="type === 'TABLE'">
+    <span
+      >Please create a new {{ name }} to see the list
+      <span class="bold">populated</span> here</span
+    >
+  </ng-container>
+  <span *ngIf="type === 'OTHERS'">
+    {{ name }}
+  </span>
+</div>

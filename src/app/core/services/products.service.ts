@@ -1,21 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Product, products } from '../../models/product.model';
+import { environment } from 'src/environments/environment.development';
+import { Product } from '../../models/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  protected products = new BehaviorSubject<Product[]>(products);
+  protected apiUrl = environment.apiUrl;
 
-  constructor() {}
+  constructor(private https: HttpClient) {}
 
   getProducts() {
-    return this.products.asObservable();
+    return this.https.get<Product[]>(`${this.apiUrl}/products`);
   }
 
-  addProducts(product: Product) {
-    const products = [...this.products.value, product];
-    this.products.next(products);
-  }
+  addProducts(product: Product) {}
 }

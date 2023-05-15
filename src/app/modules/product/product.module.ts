@@ -8,6 +8,8 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
 import { ProductCardComponent } from './products-list/components/product-card/product-card.component';
 import { ProductsListComponent } from './products-list/products-list.component';
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
+import { TableEmptyStateComponent } from 'src/app/components/table-empty-state/table-empty-state.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ProductsListComponent } from './products-list/products-list.component';
     MatCardModule,
     FormsModule,
     ReactiveFormsModule,
+    LoaderComponent,
+    TableEmptyStateComponent,
   ],
 })
 export class ProductModule {}

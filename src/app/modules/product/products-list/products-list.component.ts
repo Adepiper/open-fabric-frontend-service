@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, finalize } from 'rxjs';
 import { ProductsService } from '../../../core/services/products.service';
 import { Product } from '../../../models/product.model';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-products-list',
@@ -9,15 +10,37 @@ import { Product } from '../../../models/product.model';
   styleUrls: ['./products-list.component.scss'],
 })
 export class ProductsListComponent implements OnInit {
-  products$ = new Observable<Product[]>();
+  protected products = new BehaviorSubject<Product[]>([]);
+  products$ = this.products.asObservable();
+  loading = new BehaviorSubject(false);
+  loading$ = this.loading.asObservable();
 
-  constructor(private productService: ProductsService) {}
+  constructor(
+    private productService: ProductsService,
+    private toaster: HotToastService
+  ) {}
 
-  setProducts() {
-    this.products$ = this.productService.getProducts();
+  getProducts() {
+    this.loading.next(true);
+
+    this.productService
+      .getProducts()
+      .pipe(
+        finalize(() => {
+          this.loading.next(false);
+        })
+      )
+      .subscribe({
+        next: (value) => {
+          this.products.next(value);
+        },
+        error: (error) => {
+          this.toaster.error(error.error.message ?? 'Something went wrong');
+        },
+      });
   }
 
   ngOnInit(): void {
-    this.setProducts();
+    this.getProducts();
   }
 }
